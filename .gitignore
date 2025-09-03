@@ -1,2 +1,3 @@
 #pasta do ambiente virtual
 env/
+*__pycache__
