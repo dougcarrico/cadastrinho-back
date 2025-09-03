@@ -3,7 +3,7 @@ Projeto de MVP ainda em desenvolvimento
 
 ## Como executar
 
-- Clocar o repositório
+- Clonar o repositório
 - Acessar o diretório raiz pelo terminal
 - Instalar todas as libs python listadas no arquivo 'requirements.txt".
     - Recomendado utilizar ambientes virtuais do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
