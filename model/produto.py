@@ -1,22 +1,22 @@
-from sqlalchemy import Column, String, Integer, DateTime, Float
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import Mapped
 from datetime import datetime
-from typing import Union
 
 from model import Base
 
 class Produto(Base):
     __tablename__ = 'produto'
 
-    id = Column(Integer, primary_key=True)
-    nome = Column(String(150), unique=True)
-    quantidade = Column(Integer)
-    tipo = Column(String(100))
-    data_insercao = Column(DateTime, default=datetime.now())
-    data_atualizacao = Column(DateTime, default=datetime.now())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    nome: Mapped[str] = mapped_column(String(150), unique=True)
+    quantidade: Mapped[int] = mapped_column(Integer)
+    tipo: Mapped[str] = mapped_column(String(100))
+    data_insercao: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    data_atualizacao: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
 
 
-    def __init__(self, nome:str, quantidade:int, tipo:str, data_insercao:DateTime):
+    def __init__(self, nome:str, quantidade:int, tipo:str):
         """
         Cria um produto
 
@@ -27,8 +27,6 @@ class Produto(Base):
             data_insercao: data que o produto foi inserido no banco de dados
             data_atualizacao: data da última atualização do produto no banco de dados
         """
-
         self.nome == nome
         self.quantidade == quantidade
         self.tipo == tipo
-        self.data_insercao == data_insercao
