@@ -24,7 +24,6 @@ def home():
     """
     return redirect('/openapi')
 
-
 @app.post('/produto', tags=[produto_tag],
           responses={"200": ProdutoViewSchema})
 
@@ -34,10 +33,9 @@ def add_produto(form: ProdutoSchema):
 
     Retorna uma representação dos produtos
     """
-
-    produto = Produto(nome=form.nome, quantidade=form.quantidade, tipo=form.tipo)
-    print(f"produtos do form= {form.nome} {type(form.nome)}, {form.quantidade} {type(form.quantidade)}, {form.tipo}{type(form.tipo)}")
-    print(f"nome produto= {produto.nome}, {produto.quantidade}, {produto.tipo}")
+    produto = Produto(nome=form.nome, 
+                      quantidade=form.quantidade, 
+                      tipo=form.tipo)
     
     try:
         # Cria uma conexão com o banco de dados
@@ -52,9 +50,7 @@ def add_produto(form: ProdutoSchema):
         return apresenta_produto(produto), 200
     
     except IntegrityError as e:
-        error_msg = "Já existe produto com mesmo nome salvo nateste"
-        print(e.code)
-        print(e.orig)
+        error_msg = f"Erro de integridade: {e.orig}"
         return {
             "message": error_msg
         }, 400
