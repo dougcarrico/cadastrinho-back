@@ -1,11 +1,14 @@
 from sqlalchemy_utils import database_exists, create_database
+
 from sqlalchemy.orm import sessionmaker
+
 from sqlalchemy import create_engine
+
 import os
 
 # Importando os elementos definidos no modelo
 from model.base import Base
-# from model.produto import Produto
+from model.produto import Produto
 
 db_path = "database/"
 
@@ -18,7 +21,7 @@ if not os.path.exists(db_path):
 db_url = 'sqlite:///%s/db.sqlite3' % db_path
 
 # Cria a engine de conexão com o banco
-engine = create_engine(db_url, echo=False)
+engine = create_engine(db_url, echo=True)
 
 # Instancia um criador de seção com o banco
 Session = sessionmaker(bind=engine)
