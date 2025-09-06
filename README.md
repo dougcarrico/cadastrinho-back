@@ -15,12 +15,12 @@ pip install -r requirements.txt
 
 Para executar a API basta executar:
 ```
-pip flask run --host 0.0.0.0 --port 5000
+flask run --host 0.0.0.0 --port 5000
 ```
 
 Em modo desenvolvimento, é recomendado executar o parâmetro "reload", que irá reiniciar o servidor automaticamente após cada alteração no código
 ```
-pip flask run --host 0.0.0.0 --port 5000 --reload
+flask run --host 0.0.0.0 --port 5000 --reload
 ```
 
 Abra a URL abaixo no navegador
