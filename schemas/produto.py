@@ -67,3 +67,10 @@ def apresenta_produtos(produtos: List[Produto]):
             })
         
     return {"produtos": lista}
+
+class ProdutoDelSchema(BaseModel):
+    """
+    Define como é a estrutura retornada após uma requisição de remoção
+    """
+    message: str
+    nome: str

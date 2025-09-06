@@ -17,12 +17,14 @@ CORS(app)
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
 produto_tag = Tag(name="Produto", description="Adição de produto")
 
+
 @app.get('/', tags=[home_tag])
 def home():
     """
     Redireciona para /openapi, tela que permite a escolha do estilo de documentação.
     """
     return redirect('/openapi')
+
 
 @app.post('/produto', tags=[produto_tag],
           responses={"200": ProdutoViewSchema, "409": ErrorSchema, "400": ErrorSchema})
@@ -64,13 +66,14 @@ def add_produto(form: ProdutoSchema):
             "message": error_msg
         }, 400
     
+
 @app.get('/produto', tags=[produto_tag],
           responses={"200": ProdutoViewSchema, "404": ErrorSchema})
 def get_produto(query: ProdutoBuscaSchema):
     """
     Faz a busca por um produto
     """
-    produto_nome = query.nome
+    produto_nome = unquote(query.nome)
 
     # Criando conexão com a base
     session = Session()
@@ -83,12 +86,15 @@ def get_produto(query: ProdutoBuscaSchema):
 
         error_msg = "Produto não encontrado"
         
-        return {"mesage": error_msg}, 404
+        return {
+            "mesage": error_msg
+            }, 404
     
     else:
 
        return apresenta_produto(produto), 200
     
+
 @app.get('/produtos', tags=[produto_tag],
          responses={"200": ListaProdutosSchema})
 
@@ -105,3 +111,34 @@ def get_produtos():
     produtos = session.query(Produto).all()
        
     return apresenta_produtos(produtos), 200
+
+
+@app.delete('/produto', tags=[produto_tag],
+            responses={"200": ProdutoDelSchema, "404": ErrorSchema})
+
+def del_produto(query: ProdutoBuscaSchema):
+    """
+    Deleta um produto a partir do nome informado
+    Retorna uma mensagem confirmando a remoção
+    """
+    produto_nome = unquote(query.nome)
+
+    session = Session()
+    deleta = session.query(Produto).filter(Produto.nome == produto_nome).delete()
+    session.commit()
+
+    if deleta:
+        # Retorna mensagem de confirmação
+
+        return {
+            "message": "Produto Removido", 
+            "nome": produto_nome
+        }, 200
+    
+    else:
+        # Se o produto não foi encontrado
+        error_msg = "Produto não encontrado"
+
+        return {
+            "message": error_msg
+        }, 404
