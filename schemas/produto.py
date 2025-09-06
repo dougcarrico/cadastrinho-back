@@ -19,6 +19,9 @@ class ProdutoViewSchema(BaseModel):
     nome: str = "Nirvana Mini - Lavanda"
     quantidade: int = 10
     tipo: str = "Incenso"
+    data_incersao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
+    data_atualizacao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
+    
 
 def apresenta_produto(produto: Produto):
     """ Retorna uma representação do produto seguindo o schema definido em ProdutoViewSchema.
@@ -30,4 +33,6 @@ def apresenta_produto(produto: Produto):
         "nome": produto.nome,
         "quantidade": produto.quantidade,
         "tipo": produto.tipo,
+        "data_incersao": produto.data_incersao,
+        "data_atualizacao": produto.data_atualizacao
     }

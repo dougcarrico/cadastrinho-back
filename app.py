@@ -25,7 +25,7 @@ def home():
     return redirect('/openapi')
 
 @app.post('/produto', tags=[produto_tag],
-          responses={"200": ProdutoViewSchema})
+          responses={"200": ProdutoViewSchema, "409": ErrorSchema, "400": ErrorSchema})
 
 def add_produto(form: ProdutoSchema):
     """
@@ -50,7 +50,17 @@ def add_produto(form: ProdutoSchema):
         return apresenta_produto(produto), 200
     
     except IntegrityError as e:
+        #Erro de integridade e qual a origem do erro
         error_msg = f"Erro de integridade: {e.orig}"
         return {
             "message": error_msg
+        }, 409
+    
+    except Exception as e:
+        #Erro genérico não previsto
+        error_msg = "O item não foi adicionado por um erro desconhecido"
+
+        return {
+            "message": error_msg
         }, 400
+    
