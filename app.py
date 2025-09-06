@@ -70,5 +70,21 @@ def get_produto(query: ProdutoBuscaSchema):
     """
     Faz a busca por um produto
     """
+    produto_nome = query.nome
 
-    pass
+    # Criando conexão com a base
+    session = Session()
+
+    # Fazendo a busca
+    produto = session.query(Produto).filter(Produto.nome == produto_nome).first()
+
+    # Se não encontrar o produto
+    if not produto:
+
+        error_msg = "Produto não encontrado"
+        
+        return {"mesage": error_msg}, 404
+    
+    else:
+
+       return apresenta_produto(produto), 200
