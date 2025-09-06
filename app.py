@@ -64,3 +64,11 @@ def add_produto(form: ProdutoSchema):
             "message": error_msg
         }, 400
     
+@app.get('/produto', tags=[produto_tag],
+          responses={"200": ProdutoViewSchema, "404": ErrorSchema})
+def get_produto(query: ProdutoBuscaSchema):
+    """
+    Faz a busca por um produto
+    """
+
+    pass

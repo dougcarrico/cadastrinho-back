@@ -13,7 +13,9 @@ class ProdutoSchema(BaseModel):
     tipo: str = "Incenso"
 
 class ProdutoViewSchema(BaseModel):
-    """Define como um produto será retornado"""
+    """
+    Define como um produto será retornado
+    """
 
     id: int = 1
     nome: str = "Nirvana Mini - Lavanda"
@@ -22,10 +24,9 @@ class ProdutoViewSchema(BaseModel):
     data_incersao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
     data_atualizacao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
     
-
 def apresenta_produto(produto: Produto):
-    """ Retorna uma representação do produto seguindo o schema definido em ProdutoViewSchema.
-
+    """
+    Retorna uma representação do produto seguindo o schema definido em ProdutoViewSchema.
     """
 
     return {
@@ -36,3 +37,31 @@ def apresenta_produto(produto: Produto):
         "data_incersao": produto.data_incersao,
         "data_atualizacao": produto.data_atualizacao
     }
+
+class ProdutoBuscaSchema(BaseModel):
+    """
+    Define como deve ser a estrutura que representa a busca. Que será feita apenas com base no nome do produto.
+    """
+    nome: str = "Nirvana Mini - Lavanda"
+
+class ListaProdutosSchema(BaseModel):
+    """
+    Define como uma lista de produtos é retornada.
+    """
+
+def apresenta_produtos(produtos: List[Produto]):
+    """
+    Retorna uma lista de produtos seguindo o schema definido em ListaProdutosViewSchema e ProdutoViewSchema.
+    """
+    lista = []
+
+    for produto in produtos:
+        lista.append({
+            "nome": produto.nome,
+            "quantidade": produto.quantidade,
+            "tipo": produto.tipo,
+            "data_incersao": produto.data_incersao,
+            "data_atualizacao": produto.data_atualizacao
+            })
+        
+    return {"produtos": lista}
