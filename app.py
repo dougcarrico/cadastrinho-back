@@ -88,3 +88,20 @@ def get_produto(query: ProdutoBuscaSchema):
     else:
 
        return apresenta_produto(produto), 200
+    
+@app.get('/produtos', tags=[produto_tag],
+         responses={"200": ListaProdutosSchema})
+
+def get_produtos():
+    """
+    Faz a busca por todos os produtos cadastrados
+    Retorna uma representação da listagem de todos.
+    """
+
+    # Criando conexão com a base
+    session = Session()
+
+    # Fazendo a busca
+    produtos = session.query(Produto).all()
+       
+    return apresenta_produtos(produtos), 200

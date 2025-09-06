@@ -48,6 +48,7 @@ class ListaProdutosSchema(BaseModel):
     """
     Define como uma lista de produtos é retornada.
     """
+    produtos:List[ProdutoViewSchema]   
 
 def apresenta_produtos(produtos: List[Produto]):
     """
@@ -57,6 +58,7 @@ def apresenta_produtos(produtos: List[Produto]):
 
     for produto in produtos:
         lista.append({
+            "id": produto.id,
             "nome": produto.nome,
             "quantidade": produto.quantidade,
             "tipo": produto.tipo,
