@@ -142,3 +142,57 @@ def del_produto(query: ProdutoBuscaSchema):
         return {
             "message": error_msg
         }, 404
+    
+
+@app.put('/produto', tags=[produto_tag],
+         responses={"200": produtoUpdateSchema, "400": ErrorSchema})
+
+def produto_update(form: produtoUpdateSchema):
+    """
+    Atualiza um produto a partir do nome fornecidom atributo e valor do atributo a ser atualizado
+    """
+
+    produto_nome = form.nome
+
+    if form.nome_novo:
+        nome_novo = form.nome_novo
+    else:
+        nome_novo = Produto.nome
+
+    if form.quantidade_nova:
+        quantidade_nova = form.quantidade_nova
+    else:
+        quantidade_nova = Produto.quantidade
+
+    if form.tipo_novo:
+        tipo_novo = form.tipo_novo
+    else:
+        tipo_novo = Produto.tipo
+
+    #produto_teste = Produto.__getattribute__(Produto, produto_atributo)
+
+    try:
+        session = Session()
+        atualiza = session.query(Produto).filter(Produto.nome == produto_nome).update({Produto.nome: nome_novo, 
+                                                                                        Produto.quantidade: quantidade_nova,
+                                                                                        Produto.tipo: tipo_novo})
+        
+        print("Produto atualizado")
+        session.commit()
+
+    except IntegrityError as e:
+        #Erro de integridade e qual a origem do erro
+        error_msg = f"Erro de integridade: {e.orig}"
+        return {
+            "message": error_msg
+        }, 409
+    
+    except Exception as e:
+        #Erro genérico não previsto
+        error_msg = f"O item não foi atualzizado por um erro desconhecido: {e.__cause__}"
+
+        return {
+            "message": error_msg
+        }, 400
+
+    

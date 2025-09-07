@@ -74,3 +74,12 @@ class ProdutoDelSchema(BaseModel):
     """
     message: str
     nome: str
+
+class produtoUpdateSchema(BaseModel):
+    """
+    Define como um produto a ser atualizado informando o nome do produto
+    """
+    nome: str = "Nirvana Mini - Lavanda"
+    nome_novo: Optional[str] = "Nirvana Mini - Louro"
+    quantidade_nova: Optional[int] = 10
+    tipo_novo: Optional[str] = "Incenso"
