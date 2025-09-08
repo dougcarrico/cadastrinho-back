@@ -75,11 +75,23 @@ class ProdutoDelSchema(BaseModel):
     message: str
     nome: str
 
-class produtoUpdateSchema(BaseModel):
+class ProdutoUpdateSchema(BaseModel):
     """
-    Define como um produto a ser atualizado informando o nome do produto
+    Define como um produto a ser atualizado deve ser representado
+    
+    Deixe nome_novo com valor "" caso não deseje alterá-lo.
+    Deixe quantidade_nova com valor "-1" não deseje alterá-lo.
+    Deixe quantidade_nova com valor "" caso não deseje alterá-lo.
+
     """
     nome: str = "Nirvana Mini - Lavanda"
-    nome_novo: Optional[str] = "Nirvana Mini - Louro"
-    quantidade_nova: Optional[int] = 10
-    tipo_novo: Optional[str] = "Incenso"
+    nome_novo: str = ""
+    quantidade_nova: int = -1
+    tipo_novo: str = ""
+
+class ProdutoUpdateViewSchema(BaseModel):
+    """
+    Define a estrutura retornada após uma requisição de Update
+    """
+    message: str
+    nome: str

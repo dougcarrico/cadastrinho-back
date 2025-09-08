@@ -125,6 +125,7 @@ def del_produto(query: ProdutoBuscaSchema):
 
     session = Session()
     deleta = session.query(Produto).filter(Produto.nome == produto_nome).delete()
+    deletado = session.deleted()
     session.commit()
 
     if deleta:
@@ -132,7 +133,7 @@ def del_produto(query: ProdutoBuscaSchema):
 
         return {
             "message": "Produto Removido", 
-            "nome": produto_nome
+            "nome": deletado
         }, 200
     
     else:
@@ -145,9 +146,9 @@ def del_produto(query: ProdutoBuscaSchema):
     
 
 @app.put('/produto', tags=[produto_tag],
-         responses={"200": produtoUpdateSchema, "400": ErrorSchema})
+         responses={"200": ProdutoUpdateSchema, "400": ErrorSchema})
 
-def produto_update(form: produtoUpdateSchema):
+def produto_update(form: ProdutoUpdateSchema):
     """
     Atualiza um produto a partir do nome fornecidom atributo e valor do atributo a ser atualizado
     """
@@ -159,7 +160,7 @@ def produto_update(form: produtoUpdateSchema):
     else:
         nome_novo = Produto.nome
 
-    if form.quantidade_nova:
+    if form.quantidade_nova > 0:
         quantidade_nova = form.quantidade_nova
     else:
         quantidade_nova = Produto.quantidade
@@ -179,17 +180,24 @@ def produto_update(form: produtoUpdateSchema):
         
         print("Produto atualizado")
         session.commit()
+        return {
+            "message": "Produto atualizado!",
+            "nome": produto_nome
+        }, 200
 
     except IntegrityError as e:
         #Erro de integridade e qual a origem do erro
         error_msg = f"Erro de integridade: {e.orig}"
+        session.rollback()
+
         return {
             "message": error_msg
         }, 409
     
     except Exception as e:
         #Erro genérico não previsto
-        error_msg = f"O item não foi atualzizado por um erro desconhecido: {e.__cause__}"
+        error_msg = f"O item não foi atualizado. Erro: {e.__cause__}"
+        session.rollback()
 
         return {
             "message": error_msg
