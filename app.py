@@ -125,7 +125,6 @@ def del_produto(query: ProdutoBuscaSchema):
 
     session = Session()
     deleta = session.query(Produto).filter(Produto.nome == produto_nome).delete()
-    deletado = session.deleted()
     session.commit()
 
     if deleta:
@@ -133,7 +132,7 @@ def del_produto(query: ProdutoBuscaSchema):
 
         return {
             "message": "Produto Removido", 
-            "nome": deletado
+            "nome": produto_nome
         }, 200
     
     else:
