@@ -94,4 +94,3 @@ class ProdutoUpdateViewSchema(BaseModel):
     Define a estrutura retornada após uma requisição de Update
     """
     message: str
-    nome: str

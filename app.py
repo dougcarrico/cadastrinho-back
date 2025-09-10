@@ -2,6 +2,8 @@ from flask_openapi3 import OpenAPI, Info, Tag
 from flask import redirect
 from urllib.parse import unquote
 
+from sqlalchemy import update
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from model import Session
@@ -151,7 +153,6 @@ def produto_update(form: ProdutoUpdateSchema):
     """
     Atualiza um produto a partir do nome fornecidom atributo e valor do atributo a ser atualizado
     """
-
     produto_nome = form.nome
 
     if form.nome_novo:
@@ -169,19 +170,24 @@ def produto_update(form: ProdutoUpdateSchema):
     else:
         tipo_novo = Produto.tipo
 
-    #produto_teste = Produto.__getattribute__(Produto, produto_atributo)
-
     try:
         session = Session()
-        atualiza = session.query(Produto).filter(Produto.nome == produto_nome).update({Produto.nome: nome_novo, 
-                                                                                        Produto.quantidade: quantidade_nova,
-                                                                                        Produto.tipo: tipo_novo})
+
+        search_query = (select(Produto.nome).where(Produto.nome == produto_nome))
+        search_result = session.execute(search_query).first()
+
+        if not search_result:
+            return {
+                "message": "Produto não encontrado",
+                }
+
+        statement = (update(Produto).where(Produto.nome == produto_nome).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo))
+        session.execute(statement)
         
         print("Produto atualizado")
         session.commit()
         return {
-            "message": "Produto atualizado!",
-            "nome": produto_nome
+            "message": "Produto atualizado!"
         }, 200
 
     except IntegrityError as e:
