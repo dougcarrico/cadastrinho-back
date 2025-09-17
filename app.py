@@ -11,6 +11,8 @@ from model import Produto
 from schemas import *
 from flask_cors import CORS
 
+from datetime import datetime
+
 info = Info(title="API Cadastrinho", version="0.0.1")
 app = OpenAPI(__name__, info=info)
 CORS(app)
@@ -181,7 +183,7 @@ def produto_update(form: ProdutoUpdateSchema):
                 "message": "Produto não encontrado",
                 }
 
-        statement = (update(Produto).where(Produto.nome == produto_nome).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo))
+        statement = (update(Produto).where(Produto.nome == produto_nome).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo, data_atualizacao=datetime.now()))
         session.execute(statement)
         
         print("Produto atualizado")
