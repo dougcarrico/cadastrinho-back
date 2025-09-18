@@ -162,7 +162,7 @@ def produto_update(form: ProdutoUpdateSchema):
     else:
         nome_novo = Produto.nome
 
-    if form.quantidade_nova > 0:
+    if form.quantidade_nova >= 0:
         quantidade_nova = form.quantidade_nova
     else:
         quantidade_nova = Produto.quantidade
