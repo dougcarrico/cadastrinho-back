@@ -112,7 +112,7 @@ def get_produtos():
     session = Session()
 
     # Fazendo a busca
-    produtos = session.query(Produto).all()
+    produtos = session.query(Produto).order_by("nome").all()
        
     return apresenta_produtos(produtos), 200
 
