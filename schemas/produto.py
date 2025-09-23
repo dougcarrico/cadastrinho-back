@@ -72,16 +72,16 @@ class ProdutoDelSchema(BaseModel):
     """
     Define como é a estrutura retornada após uma requisição de remoção
     """
-    message: str
+    mensagem: str
     nome: str
 
 class ProdutoUpdateSchema(BaseModel):
     """
     Define como um produto a ser atualizado deve ser representado
     
-    Deixe nome_novo com valor "" caso não deseje alterá-lo.
-    Deixe quantidade_nova com valor "-1" não deseje alterá-lo.
-    Deixe quantidade_nova com valor "" caso não deseje alterá-lo.
+    Deixe nome_novo vazio caso não deseje alterá-lo.
+    Deixe quantidade_nova com valor "-1" caso não deseje alterá-lo.
+    Deixe quantidade_nova vazio caso não deseje alterá-lo.
 
     """
     nome: str = "Nirvana Mini - Lavanda"
@@ -93,4 +93,4 @@ class ProdutoUpdateViewSchema(BaseModel):
     """
     Define a estrutura retornada após uma requisição de Update
     """
-    message: str
+    mensagem: str

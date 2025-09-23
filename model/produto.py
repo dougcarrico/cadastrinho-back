@@ -27,7 +27,7 @@ class Produto(Base):
         """
         Cria um produto
 
-        Arguments:
+        Argumentos:
             nome: nome do produto.
             quantidade: quantidade de produtos em estoque.
             tipo: tipo do produto.

@@ -59,7 +59,7 @@ def add_produto(form: ProdutoSchema):
         #Erro de integridade e qual a origem do erro
         error_msg = f"Erro de integridade: {e.orig}"
         return {
-            "message": error_msg
+            "mensagem": error_msg
         }, 409
     
     except Exception as e:
@@ -67,7 +67,7 @@ def add_produto(form: ProdutoSchema):
         error_msg = "O item não foi adicionado por um erro desconhecido"
 
         return {
-            "message": error_msg
+            "mensagem": error_msg
         }, 400
     
 
@@ -135,7 +135,7 @@ def del_produto(query: ProdutoBuscaSchema):
         # Retorna mensagem de confirmação
 
         return {
-            "message": "Produto Removido", 
+            "mensagem": "Produto Removido", 
             "nome": produto_nome
         }, 200
     
@@ -144,7 +144,7 @@ def del_produto(query: ProdutoBuscaSchema):
         error_msg = "Produto não encontrado"
 
         return {
-            "message": error_msg
+            "mensagem": error_msg
         }, 404
     
 
@@ -180,7 +180,7 @@ def produto_update(form: ProdutoUpdateSchema):
 
         if not search_result:
             return {
-                "message": "Produto não encontrado",
+                "mensagem": "Produto não encontrado",
                 }
 
         statement = (update(Produto).where(Produto.nome == produto_nome).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo, data_atualizacao=datetime.now()))
@@ -189,7 +189,7 @@ def produto_update(form: ProdutoUpdateSchema):
         print("Produto atualizado")
         session.commit()
         return {
-            "message": "Produto atualizado!"
+            "mensagem": "Produto atualizado!"
         }, 200
 
     except IntegrityError as e:
@@ -198,7 +198,7 @@ def produto_update(form: ProdutoUpdateSchema):
         session.rollback()
 
         return {
-            "message": error_msg
+            "mensagem": error_msg
         }, 409
     
     except Exception as e:
@@ -207,7 +207,7 @@ def produto_update(form: ProdutoUpdateSchema):
         session.rollback()
 
         return {
-            "message": error_msg
+            "mensagem": error_msg
         }, 400
 
     
