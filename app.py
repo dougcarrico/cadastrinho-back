@@ -13,7 +13,7 @@ from flask_cors import CORS
 
 from datetime import datetime
 
-info = Info(title="API Cadastrinho", version="0.0.1")
+info = Info(title="API Cadastrinho", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
