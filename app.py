@@ -153,7 +153,7 @@ def del_produto(query: ProdutoBuscaSchema):
 
 def produto_update(form: ProdutoUpdateSchema):
     """
-    Atualiza um produto a partir do nome fornecidom atributo e valor do atributo a ser atualizado
+    Atualiza um produto a partir do nome fornecido, atributo e valor do atributo a ser atualizado.
     """
     produto_nome = form.nome
 
