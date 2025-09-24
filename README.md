@@ -6,27 +6,33 @@ Como parte da criação do MVP, foi feita uma entrevista com a dona da loja, min
 
 ## Como executar
 
-- Clonar ou baixar o repositório em sua máquina.
-- Criar um ambiente virtual do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html)
-- Acessar o diretório raiz pelo terminal.
-- Instalar todas as libs python listadas no arquivo 'requirements.txt".
+Clonar ou baixar o repositório em sua máquina.
 
-Comando para instalar dependências/bibliotecas descritas no arquivo 'requirements.txt'
+*OBS:* Recomendado criar um ambiente virtual do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html) com a versão 3.13.7 do python.
+```
+python3.13 -m venv env
+```
+
+OBS: Caso tenha problemas com execução de scripts Windows para a criação do ambiente virtual, ver sobre [Execution Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.5)
+
+Acessar o diretório raiz pelo terminal.
+
+Instalar libs Python descritas no arquivo 'requirements.txt' utilizando o comando abaixo.
 ```
 pip install -r requirements.txt
 ```
 
-Para executar a API basta executar:
+Executar a API com o comando abaixo.
 ```
 flask run --host 0.0.0.0 --port 5000
 ```
 
-Em modo desenvolvimento, é recomendado executar o parâmetro "reload", que irá reiniciar o servidor automaticamente após cada alteração no código
+Em modo desenvolvimento, é recomendado executar o parâmetro "reload", que irá reiniciar o servidor automaticamente após cada alteração no código. Como no exemplo abaixo.
 ```
 flask run --host 0.0.0.0 --port 5000 --reload
 ```
 
-Abra a URL abaixo no navegador
+Abrir a URL abaixo no navegador.
 ```
 http://127.0.0.1:5000/
 ```
