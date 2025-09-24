@@ -8,12 +8,17 @@ Como parte da criação do MVP, foi feita uma entrevista com a dona da loja, min
 
 Clonar ou baixar o repositório em sua máquina.
 
-*OBS:* Recomendado criar um ambiente virtual do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html) com a versão 3.13.7 do python.
+**OBS:** Recomendado criar um ambiente virtual do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html) com a versão 3.13.7 do python. Caso tenha problemas com execução de scripts Windows para a criação do ambiente virtual, ver sobre [Execution Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.5)
+
+Comando para criar o ambiente virtual.
 ```
 python3.13 -m venv env
 ```
 
-OBS: Caso tenha problemas com execução de scripts Windows para a criação do ambiente virtual, ver sobre [Execution Policies](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.5)
+Comando para ativar o ambiente virtual.
+```
+.\env\Scripts\Activate
+```
 
 Acessar o diretório raiz pelo terminal.
 
