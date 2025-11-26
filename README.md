@@ -13,19 +13,19 @@ Ter o [Docker](https://docs.docker.com/engine/install/) instalado e em execuçã
 Navegar até o diretório raiz do projeto, aquele que contém o Dockerfile e o requirements.txt, no terminal. Executar como administrador o comando abaixo para construir a imagem Docker
 
 ```
-docker build -t rest-api .
+docker build -t back-image:py3-13 .
 ```
 
 Assim que a imagem estiver criada, utilizar o comando abaixo para executar o container.
 
 ```
-docker run -p 5000:5000 rest-api
+docker run --name back-container -d -p 5000:5000 back-image:py3-13
 ```
 
 Acessar a url abaixo no navegador para visualizar a API em execução
 
 ```
-http://127.0.0.1:5000/
+http://localhost:5000
 ```
 
 ## Como executar sem Docker
