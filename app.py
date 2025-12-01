@@ -8,10 +8,13 @@ from sqlalchemy.exc import IntegrityError
 
 from model import Session
 from model import Produto
-from schemas import *
+from schemas import * 
 from flask_cors import CORS
 
 from datetime import datetime
+
+# Para poder fazer requisições para outras APIs
+import requests
 
 info = Info(title="API Cadastrinho", version="1.0.0")
 app = OpenAPI(__name__, info=info)
@@ -20,6 +23,7 @@ CORS(app)
 #definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
 produto_tag = Tag(name="Produto", description="Adição de produto")
+shipping_calculate_tag = Tag(name="Calculo de frete (Shipping Calculate)", description="Calculo de frete de um pacote")
 
 
 @app.get('/', tags=[home_tag])
@@ -209,5 +213,50 @@ def produto_update(form: ProdutoUpdateSchema):
         return {
             "mensagem": error_msg
         }, 400
-
     
+
+@app.post('/shipping_calculate', tags=[shipping_calculate_tag],
+          responses={"200": ShippingCalculateViewSchema, "409": ErrorSchema, "400": ErrorSchema})
+
+def shipping_calculate(form: ShippingCalculateSchema):
+    """
+    Envia requisição de calculo de frete para a API Melhor Envio.
+    """
+    from_postal_code = str(form.from_postal_code)
+    to_postal_code = str(form.to_postal_code)
+    package_height = form.package_height
+    package_width = form.package_width
+    package_length = form.package_length
+    package_weight = form.package_weight
+
+    try:
+        url = "https://www.melhorenvio.com.br/api/v2/me/shipment/calculate"
+
+        payload = {
+            "from": { "postal_code": from_postal_code },
+            "to": { "postal_code": to_postal_code },
+            "package": {
+                "height": package_height,
+                "width": package_width,
+                "length": package_length,
+                "weight": package_weight
+            }
+        }
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNjRjYmNlZjI5MTU1NmJmNWFjYzgzODFjNzIxNWY4NDIxODM0NjgxNDBlYTU1OWExNjYwNmE0ZTUzZmQzZmMxYWRmYzk5NGJjMGExMjlmY2IiLCJpYXQiOjE3NjQ1MTkyNTYuMTc5MjYxLCJuYmYiOjE3NjQ1MTkyNTYuMTc5MjYyLCJleHAiOjE3OTYwNTUyNTYuMTY2MjA3LCJzdWIiOiJhMDdiNWVhOS0wNGIzLTQzMzYtODFlNC0yNDk0YTczM2I4NjEiLCJzY29wZXMiOlsic2hpcHBpbmctY2FsY3VsYXRlIl19.KTaeSWtqfa5gfWLJQ7C0azRomWQXxC5KIt3R7z1BOpvtRVtjEFRsyRZH8tMsxs8dFKhbWl0B2bfV59gD_qJvz_lwN6st9mT-35k2B8axJQ6d5Kngu1g85B2yrXukbGNmmc3etaOJafvkdG1TIIoiM2qzbJVYRvWr8sdGEDXj4wHmlesIHMTlJb5mIW3rbC2bPqUKT-j1kIF_7xK7mKYM0v1UkTJVxr1TlSk5Kkw5dFyEUwfnM45NgFUn_ziVfnPyqivLivkjSOdUoAmSO3nHqZIj0mkK3lyDdj8QYOduRBg7MW0RpEafZbGnAGxfEVF-dbnMgQh9oJXP-otzZBdTurhVpD-KHjsl38q7ltNZmZGNGpUHqsw-7JYcRBHL7YuawMJfQ30NYTDQG0bliK0r04_2ccAYB9df8Zt9WkuQpfGEWr77suszGnweGH2kMqoWaWRyboHftViqRh6E6xdn9jaSinzvSH9f9SAkdAJv7VwOJE6zJqaB1iejBmuG7Z6FM56XSV7-HWQp_WcE472Ek0lV45FoLBNHl8N1TJYqIB8RM0LoRe2ZuBcZUQbCGpUnubM1g2A2woOJyCTQeRtq1v_CGS91Ljv2FWAmBAhyBfF_qv847EFexBcTeHSxktsJfpQJ0lU8BvmMeT8mYuLK_Rqc2r4gqYNBx9_NfBGla_E",
+            "User-Agent": "Aplicação (email para contato técnico)"
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+
+        return response.json(), 200
+    
+    except Exception as e:
+        #Erro genérico não previsto
+        error_msg = "Não foi possivel retornar as informacoes da API Melhor Envio"
+
+        return {
+            "mensagem": error_msg
+        }, 400
