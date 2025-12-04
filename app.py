@@ -222,8 +222,8 @@ def shipping_calculate(form: ShippingCalculateSchema):
     """
     Envia requisição de calculo de frete para a API Melhor Envio.
     """
-    from_postal_code = str(form.from_postal_code)
-    to_postal_code = str(form.to_postal_code)
+    from_postal_code = form.from_postal_code
+    to_postal_code = form.to_postal_code
     package_height = form.package_height
     package_width = form.package_width
     package_length = form.package_length
