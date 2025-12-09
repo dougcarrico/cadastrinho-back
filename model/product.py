@@ -8,12 +8,12 @@ from typing import Union
 
 from model import Base
 
-class Produto(Base):
+class Product(Base):
     """
    Classe que define a tabela Produto
     """
 
-    __tablename__ = 'produto'
+    __tablename__ = 'product'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     nome: Mapped[str] = mapped_column(String(150), unique=True)

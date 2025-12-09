@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from model import Session
-from model import Produto
+from model import Product
 from schemas import * 
 from flask_cors import CORS
 
@@ -22,7 +22,7 @@ CORS(app)
 
 #definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
-produto_tag = Tag(name="Produto", description="Adição de produto")
+product_tag = Tag(name="Product", description="Adição de produto")
 shipping_calculate_tag = Tag(name="Calculo de frete (Shipping Calculate)", description="Calculo de frete de um pacote")
 
 
@@ -34,16 +34,16 @@ def home():
     return redirect('/openapi')
 
 
-@app.post('/produto', tags=[produto_tag],
-          responses={"200": ProdutoViewSchema, "409": ErrorSchema, "400": ErrorSchema})
+@app.post('/product', tags=[product_tag],
+          responses={"200": ProductViewSchema, "409": ErrorSchema, "400": ErrorSchema})
 
-def add_produto(form: ProdutoSchema):
+def add_product(form: ProductSchema):
     """
     Adiciona um novo produto à base de dados
 
     Retorna uma representação dos produtos
     """
-    produto = Produto(nome=form.nome, 
+    product = Product(nome=form.nome, 
                       quantidade=form.quantidade, 
                       tipo=form.tipo)
     
@@ -52,12 +52,12 @@ def add_produto(form: ProdutoSchema):
         session = Session()
 
         # Adiciona produto no banco de dados
-        session.add(produto)
+        session.add(product)
 
         # Confirma comando de adição de novo item na tabela
         session.commit()
 
-        return apresenta_produto(produto), 200
+        return show_product(product), 200
     
     except IntegrityError as e:
         #Erro de integridade e qual a origem do erro
@@ -75,22 +75,22 @@ def add_produto(form: ProdutoSchema):
         }, 400
     
 
-@app.get('/produto', tags=[produto_tag],
-          responses={"200": ProdutoViewSchema, "404": ErrorSchema})
-def get_produto(query: ProdutoBuscaSchema):
+@app.get('/product', tags=[product_tag],
+          responses={"200": ProductViewSchema, "404": ErrorSchema})
+def get_product(query: ProductSearchSchema):
     """
     Faz a busca por um produto
     """
-    produto_nome = unquote(query.nome)
+    product_name = unquote(query.nome)
 
     # Criando conexão com a base
     session = Session()
 
     # Fazendo a busca
-    produto = session.query(Produto).filter(Produto.nome == produto_nome).first()
+    product = session.query(Product).filter(Product.nome == product_name).first()
 
     # Se não encontrar o produto
-    if not produto:
+    if not product:
 
         error_msg = "Produto não encontrado"
         
@@ -100,13 +100,13 @@ def get_produto(query: ProdutoBuscaSchema):
     
     else:
 
-       return apresenta_produto(produto), 200
+       return show_product(product), 200
     
 
-@app.get('/produtos', tags=[produto_tag],
-         responses={"200": ListaProdutosSchema})
+@app.get('/products', tags=[product_tag],
+         responses={"200": ProductListSchema})
 
-def get_produtos():
+def get_products():
     """
     Faz a busca por todos os produtos cadastrados
     Retorna uma representação da listagem de todos.
@@ -116,23 +116,23 @@ def get_produtos():
     session = Session()
 
     # Fazendo a busca
-    produtos = session.query(Produto).order_by("nome").all()
+    products = session.query(Product).order_by("nome").all()
        
-    return apresenta_produtos(produtos), 200
+    return show_products(products), 200
 
 
-@app.delete('/produto', tags=[produto_tag],
-            responses={"200": ProdutoDelSchema, "404": ErrorSchema})
+@app.delete('/product', tags=[product_tag],
+            responses={"200": ProductDeleteSchema, "404": ErrorSchema})
 
-def del_produto(query: ProdutoBuscaSchema):
+def del_product(query: ProductSearchSchema):
     """
     Deleta um produto a partir do nome informado
     Retorna uma mensagem confirmando a remoção
     """
-    produto_nome = unquote(query.nome)
+    product_name = unquote(query.nome)
 
     session = Session()
-    deleta = session.query(Produto).filter(Produto.nome == produto_nome).delete()
+    deleta = session.query(Product).filter(Product.nome == product_name).delete()
     session.commit()
 
     if deleta:
@@ -140,7 +140,7 @@ def del_produto(query: ProdutoBuscaSchema):
 
         return {
             "mensagem": "Produto Removido", 
-            "nome": produto_nome
+            "nome": product_name
         }, 200
     
     else:
@@ -152,34 +152,34 @@ def del_produto(query: ProdutoBuscaSchema):
         }, 404
     
 
-@app.put('/produto', tags=[produto_tag],
-         responses={"200": ProdutoUpdateSchema, "400": ErrorSchema})
+@app.put('/product', tags=[product_tag],
+         responses={"200": ProductUpdateSchema, "400": ErrorSchema})
 
-def produto_update(form: ProdutoUpdateSchema):
+def product_update(form: ProductUpdateSchema):
     """
     Atualiza um produto a partir do nome fornecido, atributo e valor do atributo a ser atualizado.
     """
-    produto_nome = form.nome
+    product_name = form.nome
 
     if form.nome_novo:
         nome_novo = form.nome_novo
     else:
-        nome_novo = Produto.nome
+        nome_novo = Product.nome
 
     if form.quantidade_nova >= 0:
         quantidade_nova = form.quantidade_nova
     else:
-        quantidade_nova = Produto.quantidade
+        quantidade_nova = Product.quantidade
 
     if form.tipo_novo:
         tipo_novo = form.tipo_novo
     else:
-        tipo_novo = Produto.tipo
+        tipo_novo = Product.tipo
 
     try:
         session = Session()
 
-        search_query = (select(Produto.nome).where(Produto.nome == produto_nome))
+        search_query = (select(Product.nome).where(Product.nome == product_name))
         search_result = session.execute(search_query).first()
 
         if not search_result:
@@ -187,7 +187,7 @@ def produto_update(form: ProdutoUpdateSchema):
                 "mensagem": "Produto não encontrado",
                 }
 
-        statement = (update(Produto).where(Produto.nome == produto_nome).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo, data_atualizacao=datetime.now()))
+        statement = (update(Product).where(Product.nome == product_name).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo, data_atualizacao=datetime.now()))
         session.execute(statement)
         
         print("Produto atualizado")

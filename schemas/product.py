@@ -1,9 +1,9 @@
 from datetime import datetime
 from pydantic import BaseModel
 from typing import Optional, List
-from model.produto import Produto
+from model.product import Product
 
-class ProdutoSchema(BaseModel):
+class ProductSchema(BaseModel):
     """
     Define como um novo produto a ser inserido deve ser representado
     """
@@ -12,7 +12,7 @@ class ProdutoSchema(BaseModel):
     quantidade: int = 10
     tipo: str = "Incenso"
 
-class ProdutoViewSchema(BaseModel):
+class ProductViewSchema(BaseModel):
     """
     Define como um produto será retornado
     """
@@ -24,58 +24,58 @@ class ProdutoViewSchema(BaseModel):
     data_incersao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
     data_atualizacao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
     
-def apresenta_produto(produto: Produto):
+def show_product(product: Product):
     """
-    Retorna uma representação do produto seguindo o schema definido em ProdutoViewSchema.
+    Retorna uma representação do produto seguindo o schema definido em ProductViewSchema.
     """
 
     return {
-        "id": produto.id,
-        "nome": produto.nome,
-        "quantidade": produto.quantidade,
-        "tipo": produto.tipo,
-        "data_incersao": produto.data_incersao,
-        "data_atualizacao": produto.data_atualizacao
+        "id": product.id,
+        "nome": product.nome,
+        "quantidade": product.quantidade,
+        "tipo": product.tipo,
+        "data_incersao": product.data_incersao,
+        "data_atualizacao": product.data_atualizacao
     }
 
-class ProdutoBuscaSchema(BaseModel):
+class ProductSearchSchema(BaseModel):
     """
     Define como deve ser a estrutura que representa a busca. Que será feita apenas com base no nome do produto.
     """
     nome: str = "Nirvana Mini - Lavanda"
 
-class ListaProdutosSchema(BaseModel):
+class ProductListSchema(BaseModel):
     """
     Define como uma lista de produtos é retornada.
     """
-    produtos:List[ProdutoViewSchema]   
+    products:List[ProductViewSchema]   
 
-def apresenta_produtos(produtos: List[Produto]):
+def show_products(products: List[Product]):
     """
-    Retorna uma lista de produtos seguindo o schema definido em ListaProdutosViewSchema e ProdutoViewSchema.
+    Retorna uma lista de produtos seguindo o schema definido em ListaProdutosViewSchema e ProductViewSchema.
     """
     lista = []
 
-    for produto in produtos:
+    for product in products:
         lista.append({
-            "id": produto.id,
-            "nome": produto.nome,
-            "quantidade": produto.quantidade,
-            "tipo": produto.tipo,
-            "data_incersao": produto.data_incersao,
-            "data_atualizacao": produto.data_atualizacao
+            "id": product.id,
+            "nome": product.nome,
+            "quantidade": product.quantidade,
+            "tipo": product.tipo,
+            "data_incersao": product.data_incersao,
+            "data_atualizacao": product.data_atualizacao
             })
         
-    return {"produtos": lista}
+    return {"products": lista}
 
-class ProdutoDelSchema(BaseModel):
+class ProductDeleteSchema(BaseModel):
     """
     Define como é a estrutura retornada após uma requisição de remoção
     """
     mensagem: str
     nome: str
 
-class ProdutoUpdateSchema(BaseModel):
+class ProductUpdateSchema(BaseModel):
     """
     Define como um produto a ser atualizado deve ser representado
     
@@ -89,7 +89,7 @@ class ProdutoUpdateSchema(BaseModel):
     quantidade_nova: int = -1
     tipo_novo: str = ""
 
-class ProdutoUpdateViewSchema(BaseModel):
+class ProductUpdateViewSchema(BaseModel):
     """
     Define a estrutura retornada após uma requisição de Update
     """

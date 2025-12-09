@@ -8,7 +8,7 @@ import os
 
 # Importando os elementos definidos no modelo
 from model.base import Base
-from model.produto import Produto
+from model.product import Product
 
 db_path = "database/"
 
