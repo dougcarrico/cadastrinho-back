@@ -16,24 +16,24 @@ class Product(Base):
     __tablename__ = 'product'
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    nome: Mapped[str] = mapped_column(String(150), unique=True)
-    quantidade: Mapped[int]
-    tipo: Mapped[str] = mapped_column(String(100))
-    data_incersao: Mapped[datetime] = mapped_column(DateTime)
-    data_atualizacao: Mapped[datetime] = mapped_column(DateTime)
+    name: Mapped[str] = mapped_column(String(150), unique=True)
+    quantity: Mapped[int]
+    type: Mapped[str] = mapped_column(String(100))
+    date_created: Mapped[datetime] = mapped_column(DateTime)
+    date_updated: Mapped[datetime] = mapped_column(DateTime)
 
-    def __init__(self, nome:str, quantidade:int, tipo:str):
+    def __init__(self, name:str, quantity:int, type:str):
 
         """
         Cria um produto
 
         Argumentos:
-            nome: nome do produto.
-            quantidade: quantidade de produtos em estoque.
-            tipo: tipo do produto.
+            name: nome do produto.
+            quantity: quantidade de produtos em estoque.
+            type: tipo do produto.
         """
-        self.nome = nome
-        self.quantidade = quantidade
-        self.tipo = tipo
-        self.data_incersao = datetime.now()
-        self.data_atualizacao = self.data_incersao
+        self.name = name
+        self.quantity = quantity
+        self.type = type
+        self.date_created = datetime.now()
+        self.date_updated = self.date_created

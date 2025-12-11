@@ -8,9 +8,9 @@ class ProductSchema(BaseModel):
     Define como um novo produto a ser inserido deve ser representado
     """
 
-    nome: str = "Nirvana Mini - Lavanda"
-    quantidade: int = 10
-    tipo: str = "Incenso"
+    name: str = "Nirvana Mini - Lavanda"
+    quantity: int = 10
+    type: str = "Incenso"
 
 class ProductViewSchema(BaseModel):
     """
@@ -18,11 +18,11 @@ class ProductViewSchema(BaseModel):
     """
 
     id: int = 1
-    nome: str = "Nirvana Mini - Lavanda"
-    quantidade: int = 10
-    tipo: str = "Incenso"
-    data_incersao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
-    data_atualizacao: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
+    name: str = "Nirvana Mini - Lavanda"
+    quantity: int = 10
+    type: str = "Incenso"
+    date_created: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
+    date_updated: datetime = "Sat, 06 Sep 2025 14:55:59 GMT"
     
 def show_product(product: Product):
     """
@@ -31,18 +31,18 @@ def show_product(product: Product):
 
     return {
         "id": product.id,
-        "nome": product.nome,
-        "quantidade": product.quantidade,
-        "tipo": product.tipo,
-        "data_incersao": product.data_incersao,
-        "data_atualizacao": product.data_atualizacao
+        "name": product.name,
+        "quantity": product.quantity,
+        "type": product.type,
+        "date_created": product.date_created,
+        "date_updated": product.date_updated
     }
 
 class ProductSearchSchema(BaseModel):
     """
-    Define como deve ser a estrutura que representa a busca. Que será feita apenas com base no nome do produto.
+    Define como deve ser a estrutura que representa a busca. Que será feita apenas com base no name do produto.
     """
-    nome: str = "Nirvana Mini - Lavanda"
+    name: str = "Nirvana Mini - Lavanda"
 
 class ProductListSchema(BaseModel):
     """
@@ -54,43 +54,43 @@ def show_products(products: List[Product]):
     """
     Retorna uma lista de produtos seguindo o schema definido em ListaProdutosViewSchema e ProductViewSchema.
     """
-    lista = []
+    product_list = []
 
     for product in products:
-        lista.append({
+        product_list.append({
             "id": product.id,
-            "nome": product.nome,
-            "quantidade": product.quantidade,
-            "tipo": product.tipo,
-            "data_incersao": product.data_incersao,
-            "data_atualizacao": product.data_atualizacao
+            "name": product.name,
+            "quantity": product.quantity,
+            "type": product.type,
+            "date_created": product.date_created,
+            "date_updated": product.date_updated
             })
         
-    return {"products": lista}
+    return {"products": product_list}
 
 class ProductDeleteSchema(BaseModel):
     """
     Define como é a estrutura retornada após uma requisição de remoção
     """
-    mensagem: str
-    nome: str
+    message: str
+    name: str
 
 class ProductUpdateSchema(BaseModel):
     """
     Define como um produto a ser atualizado deve ser representado
     
-    Deixe nome_novo vazio caso não deseje alterá-lo.
-    Deixe quantidade_nova com valor "-1" caso não deseje alterá-lo.
-    Deixe quantidade_nova vazio caso não deseje alterá-lo.
+    Deixe new_name vazio caso não deseje alterá-lo.
+    Deixe new_quantity com valor "-1" caso não deseje alterá-lo.
+    Deixe new_quantity vazio caso não deseje alterá-lo.
 
     """
-    nome: str = "Nirvana Mini - Lavanda"
-    nome_novo: str = ""
-    quantidade_nova: int = -1
-    tipo_novo: str = ""
+    name: str = "Nirvana Mini - Lavanda"
+    new_name: str = ""
+    new_quantity: int = -1
+    new_type: str = ""
 
 class ProductUpdateViewSchema(BaseModel):
     """
     Define a estrutura retornada após uma requisição de Update
     """
-    mensagem: str
+    message: str

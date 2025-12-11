@@ -43,9 +43,9 @@ def add_product(form: ProductSchema):
 
     Retorna uma representação dos produtos
     """
-    product = Product(nome=form.nome, 
-                      quantidade=form.quantidade, 
-                      tipo=form.tipo)
+    product = Product(name=form.name, 
+                      quantity=form.quantity, 
+                      type=form.type)
     
     try:
         # Cria uma conexão com o banco de dados
@@ -61,17 +61,17 @@ def add_product(form: ProductSchema):
     
     except IntegrityError as e:
         #Erro de integridade e qual a origem do erro
-        error_msg = f"Erro de integridade: {e.orig}"
+        error_message = f"Erro de integridade: {e.orig}"
         return {
-            "mensagem": error_msg
+            "message": error_message
         }, 409
     
     except Exception as e:
         #Erro genérico não previsto
-        error_msg = "O item não foi adicionado por um erro desconhecido"
+        error_message = "O item não foi adicionado por um erro desconhecido"
 
         return {
-            "mensagem": error_msg
+            "message": error_message
         }, 400
     
 
@@ -81,21 +81,21 @@ def get_product(query: ProductSearchSchema):
     """
     Faz a busca por um produto
     """
-    product_name = unquote(query.nome)
+    product_name = unquote(query.name)
 
     # Criando conexão com a base
     session = Session()
 
     # Fazendo a busca
-    product = session.query(Product).filter(Product.nome == product_name).first()
+    product = session.query(Product).filter(Product.name == product_name).first()
 
     # Se não encontrar o produto
     if not product:
 
-        error_msg = "Produto não encontrado"
+        error_message = "Produto não encontrado"
         
         return {
-            "mesage": error_msg
+            "message": error_message
             }, 404
     
     else:
@@ -116,7 +116,7 @@ def get_products():
     session = Session()
 
     # Fazendo a busca
-    products = session.query(Product).order_by("nome").all()
+    products = session.query(Product).order_by("name").all()
        
     return show_products(products), 200
 
@@ -129,26 +129,26 @@ def del_product(query: ProductSearchSchema):
     Deleta um produto a partir do nome informado
     Retorna uma mensagem confirmando a remoção
     """
-    product_name = unquote(query.nome)
+    product_name = unquote(query.name)
 
     session = Session()
-    deleta = session.query(Product).filter(Product.nome == product_name).delete()
+    product_to_delete = session.query(Product).filter(Product.name == product_name).delete()
     session.commit()
 
-    if deleta:
+    if product_to_delete:
         # Retorna mensagem de confirmação
 
         return {
-            "mensagem": "Produto Removido", 
-            "nome": product_name
+            "message": "Produto Removido", 
+            "name": product_name
         }, 200
     
     else:
         # Se o produto não foi encontrado
-        error_msg = "Produto não encontrado"
+        error_message = "Produto não encontrado"
 
         return {
-            "mensagem": error_msg
+            "message": error_message
         }, 404
     
 
@@ -157,61 +157,61 @@ def del_product(query: ProductSearchSchema):
 
 def product_update(form: ProductUpdateSchema):
     """
-    Atualiza um produto a partir do nome fornecido, atributo e valor do atributo a ser atualizado.
+    Atualiza um produto a partir do name fornecido, atributo e valor do atributo a ser atualizado.
     """
-    product_name = form.nome
+    product_name = form.name
 
-    if form.nome_novo:
-        nome_novo = form.nome_novo
+    if form.new_name:
+        new_name = form.new_name
     else:
-        nome_novo = Product.nome
+        new_name = Product.name
 
-    if form.quantidade_nova >= 0:
-        quantidade_nova = form.quantidade_nova
+    if form.new_quantity >= 0:
+        new_quantity = form.new_quantity
     else:
-        quantidade_nova = Product.quantidade
+        new_quantity = Product.quantity
 
-    if form.tipo_novo:
-        tipo_novo = form.tipo_novo
+    if form.new_type:
+        new_type = form.new_type
     else:
-        tipo_novo = Product.tipo
+        new_type = Product.type
 
     try:
         session = Session()
 
-        search_query = (select(Product.nome).where(Product.nome == product_name))
+        search_query = (select(Product.name).where(Product.name == product_name))
         search_result = session.execute(search_query).first()
 
         if not search_result:
             return {
-                "mensagem": "Produto não encontrado",
+                "message": "Produto não encontrado",
                 }
 
-        statement = (update(Product).where(Product.nome == product_name).values(nome=nome_novo, quantidade=quantidade_nova, tipo=tipo_novo, data_atualizacao=datetime.now()))
+        statement = (update(Product).where(Product.name == product_name).values(name=new_name, quantity=new_quantity, type=new_type, date_updated=datetime.now()))
         session.execute(statement)
         
         print("Produto atualizado")
         session.commit()
         return {
-            "mensagem": "Produto atualizado!"
+            "message": "Produto atualizado!"
         }, 200
 
     except IntegrityError as e:
         #Erro de integridade e qual a origem do erro
-        error_msg = f"Erro de integridade: {e.orig}"
+        error_message = f"Erro de integridade: {e.orig}"
         session.rollback()
 
         return {
-            "mensagem": error_msg
+            "message": error_message
         }, 409
     
     except Exception as e:
         #Erro genérico não previsto
-        error_msg = f"O item não foi atualizado. Erro: {e.__cause__}"
+        error_message = f"O item não foi atualizado. Erro: {e.__cause__}"
         session.rollback()
 
         return {
-            "mensagem": error_msg
+            "message": error_message
         }, 400
     
 
@@ -255,8 +255,8 @@ def shipping_calculate(form: ShippingCalculateSchema):
     
     except Exception as e:
         #Erro genérico não previsto
-        error_msg = "Não foi possivel retornar as informacoes da API Melhor Envio"
+        error_message = "Não foi possivel retornar as informacoes da API Melhor Envio"
 
         return {
-            "mensagem": error_msg
+            "message": error_message
         }, 400
