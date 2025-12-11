@@ -4,4 +4,4 @@ class ErrorSchema(BaseModel):
     """
     Define como uma mensagem de erro será representada
     """
-    mensagem: str
+    message: str

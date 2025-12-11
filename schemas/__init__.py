@@ -1,4 +1,4 @@
-from schemas.produto import ProdutoSchema, ProdutoViewSchema, ProdutoBuscaSchema, ListaProdutosSchema, ProdutoDelSchema, ProdutoUpdateSchema 
-from schemas.produto import apresenta_produto, apresenta_produtos
+from schemas.product import ProductSchema, ProductViewSchema, ProductSearchSchema, ProductListSchema, ProductDeleteSchema, ProductUpdateSchema 
+from schemas.product import show_product, show_products
 from schemas.error import ErrorSchema
 from schemas.shipping import ShippingCalculateSchema, ShippingCalculateViewSchema
