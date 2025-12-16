@@ -65,3 +65,10 @@ Abrir a URL abaixo no navegador.
 ```
 http://127.0.0.1:5000/
 ```
+
+## API externa
+
+É utilizada a API do Melhor Envio para a rota POST de cálculo de frete (/shipping_calculate).
+Para mais informações sobre a API, ver os links abaixo:
+- https://docs.melhorenvio.com.br/docs/cotacao-de-fretes
+- https://docs.melhorenvio.com.br/reference/calculo-de-fretes-por-produtos
