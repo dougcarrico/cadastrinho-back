@@ -165,7 +165,7 @@ def del_product(query: ProductSearchSchema):
 
 def product_update(form: ProductUpdateSchema):
     """
-    Atualiza um produto a partir do name fornecido, atributo e valor do atributo a ser atualizado.
+    Atualiza um produto a partir do nome fornecido, atributo e valor do atributo a ser atualizado.
     """
     product_name = form.name
 
