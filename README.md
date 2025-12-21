@@ -23,11 +23,10 @@ Para mais informações sobre a API, ver os links abaixo:
 - Copiar o token e salvar em algum local seguro
 
 ## Configurar arquivo de variáveis de ambiente (Serve para rodar com docker ou sem docker)
-- Criar um arquivo com o nome ".env" na pasta pai da pasta raiz do back-end. Exemplo da estrutura abaixo.
+- Criar um arquivo com o nome ".env" na pasta pai da pasta raiz do back-end. Como no exemplo abaixo, que o arquivo ".env" é irmão da pasta "cadastrinho-back", pasta raiz do back-end.
 ```
 /.env
 /cadastrinho-back/
-/cadastrinho-front/
 ```
 - Adicionar o conteúdo abaixo no arquivo ".env", substituindo "meu_token" pelo token de shipping calculate da Melhor Envio
 ```
