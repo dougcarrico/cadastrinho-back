@@ -4,6 +4,36 @@ Este é o back-end do projeto de MVP para a Sprint de "Desenvolvimento Full Stac
 O projeto tem como objetivo ser uma aplicação de cadastro de produtos da "Una - Loja Holística".
 Como parte da criação do MVP, foi feita uma entrevista com a dona da loja, minha esposa, para definir os requisitos iniciais da primeira versão da aplicação, alinhando necessidades da loja com os requisitos do MVP da sprint.
 
+## API externa - Shipping Calculate (Melhor Envio)
+
+É utilizada a API do Melhor Envio para a rota POST de cálculo de frete (/shipping_calculate).
+Para mais informações sobre a API, ver os links abaixo:
+- https://docs.melhorenvio.com.br/docs/cotacao-de-fretes
+- https://docs.melhorenvio.com.br/reference/calculo-de-fretes-por-produtos
+
+### Como gerar o token para uso do shipping calculate da Melhor Envio
+- Criar conta no https://melhorenvio.com.br/ 
+- Clicar em "Integrações"
+- Clicar em "Permissões de acesso"
+- Clicar em "Gerar um novo token"
+- Clicar em "Li e concordo" e clicar em avançar
+- Definir um nome para o token
+- Em "Permissões" clicar em "Shipping calculate (Cotação de fretes)"
+- Clicar em "Gerar token"
+- Copiar o token e salvar em algum local seguro
+
+## Configurar arquivo de variáveis de ambiente (Serve para rodar com docker ou sem docker)
+- Criar um arquivo ".env" na pasta pai da pasta raiz do back-end. Exemplo da estrutura abaixo.
+```
+/.env
+/cadastrinho-back/
+/cadastrinho-front/
+```
+- Adicionar o conteúdo abaixo no arquivo ".env", substituindo "meu_token" pelo o token de shipping calculate da Melhor Envio
+```
+SHIPPING_CALCULATE_TOKEN=meu_token
+```
+
 ## Como executar com Docker
 
 Clonar ou baixar o repositório em sua máquina.
@@ -19,8 +49,13 @@ docker build -t back-image:py3-13 .
 Assim que a imagem estiver criada, utilizar o comando abaixo para executar o container.
 
 ```
-docker run --name back-container -d -p 5000:5000 back-image:py3-13
+docker run --env-file ../.env --name back-container -d -p 5000:5000 back-image:py3-13
 ```
+- `--env-file ../.env` define o arquivo de variáveis a ser utilizado
+- `--name back-container` define o nome do container
+- `-d` define que o container rodará em plano de fundo e imprime o id do container no terminal
+- `-p 5000:5000` define as portas utilizadas
+- `back-image:py3-13` define a imagem a ser utilizada para criação do container
 
 Acessar a url abaixo no navegador para visualizar a API em execução
 
@@ -65,10 +100,3 @@ Abrir a URL abaixo no navegador.
 ```
 http://127.0.0.1:5000/
 ```
-
-## API externa
-
-É utilizada a API do Melhor Envio para a rota POST de cálculo de frete (/shipping_calculate).
-Para mais informações sobre a API, ver os links abaixo:
-- https://docs.melhorenvio.com.br/docs/cotacao-de-fretes
-- https://docs.melhorenvio.com.br/reference/calculo-de-fretes-por-produtos
